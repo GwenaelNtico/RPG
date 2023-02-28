@@ -1,68 +1,41 @@
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-
+@Builder
 class Personnage {
 
-
-
+    @NonNull
     private String nom;
-    private int hp;
     private String race;
     private String metier;
+    private int hp;
     private int mp;
     private int force;
     private int dexterite;
-    private int intelligence;
     private int constitution;
+    private int intelligence;
     private int armure;
+    private boolean mort;
+    private int numeroEquipe;
+    private Magie magie;
 
-    Personnage(String nom, int hp, String race, String metier){
-        this.nom = nom;
-        this.hp = hp;
-        this.race = race;
-        this.metier = metier;
-    }
-
-    Personnage(String nom, int hp, int mp, int force, int dexterite, int intelligence, int constitution, int armure, String race, String metier){
-        this.nom = nom;
-        this.hp = hp;
-        this.race = race;
-        this.metier = metier;
-
-        this.mp = mp;
-        this.force = force;
-        this.dexterite = dexterite;
-        this.intelligence = intelligence;
-        this.constitution = constitution;
-        this.armure = armure;
-    }
-
-    public Personnage() {
-
-    }
-
-
-    enum race {
+    enum Race {
         humain,
         elfe,
         nain;
 
-        race() {
+        Race() {
         }
     }
 
-    enum metier {
+    enum Metier {
         guerrier,
         mage,
         pretre,
         archer;
 
-        metier() {
+        Metier() {
         }
     }
 }
