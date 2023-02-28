@@ -1,182 +1,337 @@
-import org.jetbrains.annotations.NotNull;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
-public class Texte {
+public class Introduction {
 
-    Texte(){
+    Introduction() {
 
     }
 
-     protected void ecrireIntro(){
+    protected void ecrireIntro() {
         System.out.println("Bienvenue dans cet univers.");
         System.out.println("Vous pouvez choisir 3 personnages parmi les races suivantes : ");
-        System.out.println("Humain > HP:10 ; MP:3 ");
-        System.out.println("Elfe > HP:8 ; MP:5 ");
-        System.out.println("Nain > HP:12 ; MP:2 ");
+        System.out.println("Humain > HP:20 ; MP:4 ; Force:10 ; Dexterite:10 ; Constitution:10 ; Intelligence:10");
+        System.out.println("Elfe > HP:16 ; MP:6 ; Force:8 ; Dexterite:13 ; Constitution:8 ; Intelligence:11");
+        System.out.println("Nain > HP:25 ; MP:3 ; Force:13 ; Dexterite:7 ; Constitution:12 ; Intelligence:8");
         System.out.println("Pour chaque personnage, vous pouvez choisir un métier : ");
-        System.out.println("Guerrier > +2HP ; -1MP ");
-        System.out.println("Archer > +0HP ; +0MP ");
-        System.out.println("Pretre > -1HP ; +1MP ");
-        System.out.println("Mage > -2HP ; +2MP ");
-        System.out.println("Une fois votre choix effectué, vous pourrez disposer vos points de stats suivants : ");
-        System.out.println("Force, Dexterite, Constitution, Intelligence");
-        System.out.println("Vous pouvez ajouter des points mais aussi en retirer jusqu'au minimum de 5 (base de 10, max 20).");
+        System.out.println("Guerrier > +4HP ; -2MP ; Force:+2 ; Dexterite:+0 ; Constitution:+1 ; Intelligence:-3");
+        System.out.println("Archer > +0HP ; +0MP ; Force:-2 ; Dexterite:+4 ; Constitution:-1 ; Intelligence:-1");
+        System.out.println("Pretre > -1HP ; +1MP ; Force:-1 ; Dexterite:-2 ; Constitution:+1 ; Intelligence:+2");
+        System.out.println("Mage > -3HP ; +2MP ; Force:-3 ; Dexterite:-2 ; Constitution:-2 ; Intelligence:+6");
+        System.out.println("Pour chaque métier, vous possédez des compétences consommant des MP : ");
+        System.out.println("Guerrier > double attaque. Consomme 1MP. Utilisable tous les 2 tours");
+        System.out.println("Archer > double flèche. Consomme 1MP. Utilisable tous les 2 tours");
+        System.out.println("Pretre > Soin (1D4 + 1/5 intelligence). Consomme 1MP. Utilisable tout le temps");
+        System.out.println("Pretre > Protection (+1 armure). Consomme 1MP. Dure 2 tours. Utilisable tous les 2 tours");
+        System.out.println("Pretre > Renforcement (+1 dégats). Consomme 1MP. Dure 2 tours. Utilisable tous les 2 tours");
+        System.out.println("Pretre > Guérison (soigne poison). Consomme 1MP. Utilisable tout le temps");
+        System.out.println("Mage > feu (1D4 + 1/5 intelligence). Consomme 1MP. Utilisable tous les 2 tours");
+        System.out.println("Mage > glace (1D4 + 1/5 intelligence). Consomme 1MP. Utilisable tous les 2 tours");
+        System.out.println("Mage > foudre (1D4 + 1/5 intelligence). Consomme 1MP. Utilisable tous les 2 tours");
+        System.out.println("Mage > poison (2 points de dégats par tour). Consomme 1MP. Dure 5 tours. Utilisable tous les 3 tours");
         System.out.println("A vous de jouer, constituez votre équipe !");
     }
 
-    
+    protected List<Personnage> creerEquipe(int tailleEquipe, int numeroEquipe) {
 
-    protected void saisirNom(int tailleEquipe, Personnage... equipe){
+        List<Personnage> equipe = new ArrayList<Personnage>();
+        while(equipe.size() < tailleEquipe){
+            equipe.add(creerPersonnage(equipe.size(), numeroEquipe));
+        }
+
+        return equipe;
+    }
+
+    protected Personnage creerPersonnage(int numeroPersonnage, int numeroEquipe) {
+        String nom = saisirNom(numeroPersonnage);
+        String race = saisirRace(numeroPersonnage);
+        String metier = saisirMetier(numeroPersonnage);
+        Magie magie = saisirMagie(metier);
+
+        //Builder
+        return Personnage.builder()
+                .nom(nom)
+                .race(race)
+                .metier(metier)
+                .force(initForce(race, metier))
+                .dexterite(initDexterite(race, metier))
+                .constitution(InitConstitution(race, metier))
+                .intelligence(InitIntelligence(race, metier))
+                .hp(InitHP(race, metier))
+                .mp(InitMP(race, metier))
+                .armure(1)
+                .mort(false)
+                .numeroEquipe(numeroEquipe)
+                .magie(magie)
+                .build();
+    }
+
+    protected String saisirNom(int numeroPersonnage) {
         Scanner sc = new Scanner(System.in);
         int erreur = -1;
         String buff = "";
 
-        for(int i = 0; i <= tailleEquipe; i++) {
-            switch (i){
-                case 0:
-                    System.out.println("Tout d'abord, quel est le nom du premier personnage (20 caractères max) ?");
-                    break;
-                case 1:
-                    System.out.println("Ensuite, quel est le nom du second personnage ?");
-                    break;
-                case 2:
-                    System.out.println("Pour finir quel est le nom du dernier personnage ?");
-                    break;
-                default:
-                    System.out.println("Erreur boucle nom personnage :(");
-                    break;
+        switch (numeroPersonnage) {
+            case 0 -> System.out.println("Tout d'abord, quel est le nom du premier personnage (20 caractères max) ?");
+            case 1 -> System.out.println("Ensuite, quel est le nom du second personnage ?");
+            case 2 -> System.out.println("Pour finir quel est le nom du dernier personnage ?");
+            default -> System.out.println("Erreur boucle nom personnage :(");
+        }
+
+        while (erreur != 0) {
+            buff = sc.nextLine();
+
+            if (buff.length() > 20) {
+                erreur = 2;
+                System.out.println("Il y a plus de 20 caractères, tu sais lire des instructions ?");
+            } else erreur = 0;
+
+            if (buff.isBlank()) {
+                erreur = 1;
+                System.out.println("Il faut au moins un caractère non vide pfff..");
             }
+        }
+        return buff;
+    }
+
+    protected String saisirRace(int numeroPersonnage) {
+        Scanner sc = new Scanner(System.in);
+        int erreur = -1;
+        String buff = "";
+
+        switch (numeroPersonnage) {
+            case 0 -> {
+                System.out.println("Quelle est la race du premier personnage ?");
+                System.out.println("Tapez '1' pour Humain");
+                System.out.println("Tapez '2' pour Elfe");
+                System.out.println("Tapez '3' pour Nain");
+            }
+            case 1 -> {
+                System.out.println("Quelle est la race du second personnage ?");
+                System.out.println("Tapez '1' pour Humain");
+                System.out.println("Tapez '2' pour Elfe");
+                System.out.println("Tapez '3' pour Nain");
+            }
+            case 2 -> {
+                System.out.println("Quelle est la race du troisième personnage ?");
+                System.out.println("Tapez '1' pour Humain");
+                System.out.println("Tapez '2' pour Elfe");
+                System.out.println("Tapez '3' pour Nain");
+            }
+            default -> System.out.println("Erreur boucle race personnage :(");
+        }
 
             while (erreur != 0) {
                 buff = sc.nextLine();
-
-                if (buff.length() > 20) {
-                    erreur = 2;
-                    System.out.println("Il y a plus de 20 caractères, tu sais lire des instructions ?");
+                erreur = 0;
+                switch (buff) {
+                    case "1" -> buff = "Humain";
+                    case "2" -> buff = "Elfe";
+                    case "3" -> buff = "Nain";
+                    default -> {
+                        System.out.println("Tapez '1' pour Humain, '2' pour Elfe ou '3' pour Nain");
+                        erreur = 1;
+                    }
                 }
-                if (buff.isBlank() == true) {
+
+            }
+        return buff;
+    }
+
+    protected String saisirMetier(int numeroPersonnage) {
+        Scanner sc = new Scanner(System.in);
+        int erreur = -1;
+        String buff = "";
+
+        switch (numeroPersonnage) {
+            case 0 -> {
+                System.out.println("Quelle est le metier du premier personnage ?");
+                System.out.println("Tapez '1' pour Guerrier");
+                System.out.println("Tapez '2' pour Archer");
+                System.out.println("Tapez '3' pour Pretre");
+                System.out.println("Tapez '4' pour Mage");
+            }
+            case 1 -> {
+                System.out.println("Quelle est le metier du second personnage ?");
+                System.out.println("Tapez '1' pour Guerrier");
+                System.out.println("Tapez '2' pour Archer");
+                System.out.println("Tapez '3' pour Pretre");
+                System.out.println("Tapez '4' pour Mage");
+            }
+            case 2 -> {
+                System.out.println("Quelle est le metier du troisième personnage ?");
+                System.out.println("Tapez '1' pour Guerrier");
+                System.out.println("Tapez '2' pour Archer");
+                System.out.println("Tapez '3' pour Pretre");
+                System.out.println("Tapez '4' pour Mage");
+            }
+            default -> System.out.println("Erreur boucle metier personnage :(");
+        }
+
+        while (erreur != 0) {
+            buff = sc.nextLine();
+            erreur = 0;
+            switch (buff) {
+                case "1":
+                    buff = "Guerrier";
+                case "2":
+                    buff = "Archer";
+                case "3":
+                    buff = "Pretre";
+                case "4":
+                    buff = "Mage";
+                default:
+                    System.out.println("Tapez '1' pour Guerrier, '2' pour Archer, '3' pour Pretre ou '4' pour Mage");
                     erreur = 1;
-                    System.out.println("Il faut au moins un caractère non vide pfff..");
-                }
-            }
-            i += 1;
-        }
-
-    }
-
-    protected void saisirRace(int tailleEquipe, Personnage... equipe){
-        Scanner sc = new Scanner(System.in);
-        int erreur = -1;
-        String buff = "";
-
-        for(int i = 0; i <= tailleEquipe; i++) {
-            switch (i){
-                case 0:
-                    System.out.println("Quelle est la race du premier personnage ?");
-                    break;
-                case 1:
-                    System.out.println("Quelle est la race du second personnage ?");
-                    break;
-                case 2:
-                    System.out.println("Quelle est la race du troisième personnage ?");
-                    break;
-                default:
-                    System.out.println("Erreur boucle race personnage :(");
-                    break;
-            }
-
-            erreur = -1;
-
-            while (erreur != 0) {
-                buff = sc.nextLine();
-
-                switch (buff){
-                    case "Humain":
-                        AjouterHP(equipe[i], 10);
-                        SoustraireMP(equipe[i], 3);
-                        break;
-                    case "Elfe":
-                        AjouterHP(equipe[i], 8);
-                        SoustraireMP(equipe[i], 5);
-                        break;
-                    case "Nain":
-                        AjouterHP(equipe[i], 12);
-                        SoustraireMP(equipe[i], 2);
-                        break;
-                    default:
-                        System.out.println("Il n'y a que 3 choix possibles : Humain, Elfe ou Nain");
-                        break;
-                }
             }
         }
+        return buff;
     }
 
-    protected void saisirMetier(int tailleEquipe, Personnage... equipe){
-        Scanner sc = new Scanner(System.in);
-        int erreur = -1;
-        String buff = "";
-
-        for(int i = 0; i <= tailleEquipe; i++) {
-            switch (i){
-                case 0:
-                    System.out.println("Quelle est le metier du premier personnage ?");
-                    break;
-                case 1:
-                    System.out.println("Quelle est le metier du second personnage ?");
-                    break;
-                case 2:
-                    System.out.println("Quelle est le metier du troisième personnage ?");
-                    break;
-                default:
-                    System.out.println("Erreur boucle metier personnage :(");
-                    break;
-            }
-
-            erreur = -1;
-
-            while (erreur != 0) {
-                buff = sc.nextLine();
-
-                switch (buff){
-                    case "Guerrier":
-                        AjouterHP(equipe[i], 2);
-                        SoustraireMP(equipe[i], 1);
-                        break;
-                    case "Archer":
-                        AjouterHP(equipe[i], 0);
-                        SoustraireMP(equipe[i], 0);
-                        break;
-                    case "Pretre":
-                        SoustraireHP(equipe[i], 1);
-                        AjouterMP(equipe[i], 1);
-                        break;
-                    case "Mage":
-                        SoustraireHP(equipe[i], 2);
-                        AjouterMP(equipe[i], 2);
-                        break;
-                    default:
-                        System.out.println("Il n'y a que 4 choix possibles : Guerrier, Archer, Pretre ou Mage");
-                        break;
-                }
-            }
+    protected Magie saisirMagie(String metier){
+        Magie magie;
+        switch (metier){
+            case "Guerrier":
+                magie = new Magie(-1,-1,-1,-1,-1,-1,-1,-1,-1,0);
+            case "Archer":
+                magie = new Magie(-1,-1,-1,-1,-1,-1,-1,-1,0,-1);
+            case "Pretre":
+                magie = new Magie(-1,-1,-1,-1,0,0,0,0,-1,-1);
+            case "Mage":
+                magie = new Magie(0,0,0,0,-1,-1,-1,-1,-1,-1);
+            default:
+                magie = null;
         }
+
+        return magie;
     }
 
-    protected void AjouterHP(@NotNull Personnage perso, int soin){
-        perso.setHp(perso.getHp()+soin);
+    protected int initForce(String race, String metier){
+        int force = 0;
+
+        switch (race) {
+            case "Humain" -> force += 10;
+            case "Elfe" -> force += 8;
+            case "Nain" -> force += 13;
+            default -> System.out.println("Erreur dans l'init de la force pour la race (elle n'est pas en toi) :(");
+        }
+
+        switch (metier) {
+            case "Guerrier" -> force += 2;
+            case "Archer" -> force -= 2;
+            case "Pretre" -> force -= 1;
+            case "Mage" -> force -= 3;
+            default -> System.out.println("Erreur dans l'init de la force pour le metier (elle n'est pas en toi) :(");
+        }
+
+        return force;
     }
 
-    protected void SoustraireHP(@NotNull Personnage perso, int soin){
-        perso.setHp(perso.getHp()-soin);
+    protected int initDexterite(String race, String metier){
+        int dexterite = 0;
+
+        switch (race) {
+            case "Humain" -> dexterite += 10;
+            case "Elfe" -> dexterite += 13;
+            case "Nain" -> dexterite += 7;
+            default -> System.out.println("Erreur dans l'init de la dexterite pour la race :(");
+        }
+
+        switch (metier) {
+            case "Guerrier" -> dexterite += 0;
+            case "Archer" -> dexterite += 4;
+            case "Pretre" -> dexterite -= 2;
+            case "Mage" -> dexterite -= 2;
+            default -> System.out.println("Erreur dans l'init de la dexterite pour le metier :(");
+        }
+
+        return dexterite;
     }
 
-    protected void AjouterMP(@NotNull Personnage perso, int soin){
-        perso.setMp(perso.getMp()+soin);
+    protected int InitConstitution(String race, String metier){
+        int constitution = 0;
+
+        switch (race) {
+            case "Humain" -> constitution += 10;
+            case "Elfe" -> constitution += 8;
+            case "Nain" -> constitution += 12;
+            default -> System.out.println("Erreur dans l'init de la constitution pour la race :(");
+        }
+
+        switch (metier) {
+            case "Guerrier" -> constitution += 1;
+            case "Archer" -> constitution -= 1;
+            case "Pretre" -> constitution += 1;
+            case "Mage" -> constitution -= 2;
+            default -> System.out.println("Erreur dans l'init de la constitution pour le metier :(");
+        }
+
+        return constitution;
     }
 
-    protected void SoustraireMP(@NotNull Personnage perso, int soin){
-        perso.setMp(perso.getMp()-soin);
+    protected int InitIntelligence(String race, String metier){
+        int intelligence = 0;
+
+        switch (race) {
+            case "Humain" -> intelligence += 10;
+            case "Elfe" -> intelligence += 11;
+            case "Nain" -> intelligence += 8;
+            default -> System.out.println("Erreur dans l'init de l'intel pour la race :(");
+        }
+
+        switch (metier) {
+            case "Guerrier" -> intelligence -= 3;
+            case "Archer" -> intelligence -= 1;
+            case "Pretre" -> intelligence += 2;
+            case "Mage" -> intelligence += 6;
+            default -> System.out.println("Erreur dans l'init de l'intel pour le metier) :(");
+        }
+
+        return intelligence;
     }
+
+    protected int InitHP(String race, String metier){
+        int hp = 0;
+
+        switch (race) {
+            case "Humain" -> hp += 20;
+            case "Elfe" -> hp += 16;
+            case "Nain" -> hp += 25;
+            default -> System.out.println("Erreur dans l'init des hp pour la race :(");
+        }
+
+        switch (metier) {
+            case "Guerrier" -> hp += 4;
+            case "Archer" -> hp += 0;
+            case "Pretre" -> hp -= 1;
+            case "Mage" -> hp -= 3;
+            default -> System.out.println("Erreur dans l'init des hp pour le metier) :(");
+        }
+
+        return hp;
+    }
+
+    protected int InitMP(String race, String metier){
+        int mp = 0;
+
+        switch (race) {
+            case "Humain" -> mp += 4;
+            case "Elfe" -> mp += 6;
+            case "Nain" -> mp += 3;
+            default -> System.out.println("Erreur dans l'init des mp pour la race :(");
+        }
+
+        switch (metier) {
+            case "Guerrier" -> mp -= 2;
+            case "Archer" -> mp += 0;
+            case "Pretre" -> mp += 1;
+            case "Mage" -> mp += 2;
+            default -> System.out.println("Erreur dans l'init des mp pour le metier) :(");
+        }
+
+        return mp;
+    }
+
 }

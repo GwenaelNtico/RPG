@@ -1,2 +1,13 @@
-package PACKAGE_NAME;public class Jeu {
+public class Jeu {
+
+    boolean equipeMorte(){
+        boolean equipeMorte = false;
+
+
+
+        return equipeMorte;
+    }
+
+
+
 }
