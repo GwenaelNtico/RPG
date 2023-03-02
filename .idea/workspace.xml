@@ -5,18 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9f17eb0d-73f5-416c-9c81-3351183df61b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Characteristics.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Job.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MagieNoire.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Race.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Team.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Status.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Actions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Actions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Character.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Character.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Characteristics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Characteristics.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Introduction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Introduction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Jeu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Jeu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Magie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Magic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Personnage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Character.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Magic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Magic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MagieNoire.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677594589114</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="init git">
+      <created>1677763273238</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1677763273238</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

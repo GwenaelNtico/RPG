@@ -18,14 +18,13 @@ public class Actions {
         resultatDe = de.lancerDe(1, 100);
         if (touche <= resultatDe){
             attaqueReussie = true;
-            degats = (round(attaquant.getForce() / 5) + de.lancerDe(2, 4)) - defenseur.getArmure();
+            degats = (round(attaquant.getCharacteristics().getStrength() / 5) + de.lancerDe(2, 4)) - defenseur.getCharacteristics().getDefense();
             if (resultatDe >= 99) {
                 degats = (int) round(degats * 1.5);
             }
             if (defenseur.getHp() - degats < 0) {
                 // PERSONNAGE MORT
                 defenseur.setHp(0);
-                defenseur.setMort(true);
                 System.out.printf("%s est mort. RIP.%n", defenseur.getName());
             }else defenseur.setHp(defenseur.getHp() - degats);
 
@@ -38,14 +37,14 @@ public class Actions {
         De de = new De();
 
         resultatDe = de.lancerDe(1,4);
-        soin = resultatDe + round(soigneur.getIntelligence() / 5);
+        soin = resultatDe + round(soigneur.getCharacteristics().getWisdom() / 5);
 
 
     }
 
     void repos(Character perso){
         Magic magic = perso.getMagic();
-        magic.changerTour(perso, magic);
+        //magic.changerTour(perso, magic);
     }
 
 }

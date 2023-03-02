@@ -44,26 +44,35 @@ public class Introduction {
         return equipe;
     }
 
-    protected Character creerPersonnage(int numeroPersonnage, int numeroEquipe) {
-        String nom = saisirNom(numeroPersonnage);
-        String race = saisirRace(numeroPersonnage);
-        String metier = saisirMetier(numeroPersonnage);
+    protected Character creerPersonnage(int characterNumber, int teamNumber) {
+        String name = saisirNom(characterNumber);
+        String race = putRace(characterNumber);
+        String job = putJob(characterNumber);
+        Magic magic = new Magic();
+
 
         //Builder
         return Character.builder()
-                .name(nom)
-                .race(race)
-                .job(metier)
-                .force(initForce(race, metier))
-                .dexterite(initDexterite(race, metier))
-                .constitution(InitConstitution(race, metier))
-                .intelligence(InitIntelligence(race, metier))
-                .hp(InitHP(race, metier))
-                .mp(InitMP(race, metier))
-                .armure(1)
-                .mort(false)
-                .teamNumber(numeroEquipe)
+                .name(name)
+                .race(Race.valueOf(race))
+                .job(Job.valueOf(job))
+                .level(1)
+                .characteristics(initCharacteristics(race, job))
+                .teamNumber(teamNumber)
+                .spells(magic.giveMeMagic(Job.valueOf(job)))
+                .status(Status.alright)
                 .build();
+
+        /*
+        Characteristics newCharacteristics = Characteristics.builder()
+                .strength(this.characteristics.getStrength() + 2)
+                .dexterity(this.characteristics.getDexterity() + 1)
+                .constitution(this.characteristics.getConstitution() + 2)
+                //TODO add characteristics upgrades when leveling up
+                .build();
+        return newCharacteristics;
+
+         */
     }
 
     protected String saisirNom(int numeroPersonnage) {
@@ -94,43 +103,27 @@ public class Introduction {
         return buff;
     }
 
-    protected String saisirRace(int numeroPersonnage) {
+    protected String putRace(int characterNumber) {
         Scanner sc = new Scanner(System.in);
-        int erreur = -1;
+        int error = -1;
         String buff = "";
+        Race race;
 
-        switch (numeroPersonnage) {
-            case 0 -> {
-                System.out.println("Quelle est la race du premier personnage ?");
+                System.out.println("Quelle est la race du personnage ?");
                 System.out.println("Tapez '1' pour Humain");
                 System.out.println("Tapez '2' pour Elfe");
                 System.out.println("Tapez '3' pour Nain");
-            }
-            case 1 -> {
-                System.out.println("Quelle est la race du second personnage ?");
-                System.out.println("Tapez '1' pour Humain");
-                System.out.println("Tapez '2' pour Elfe");
-                System.out.println("Tapez '3' pour Nain");
-            }
-            case 2 -> {
-                System.out.println("Quelle est la race du troisième personnage ?");
-                System.out.println("Tapez '1' pour Humain");
-                System.out.println("Tapez '2' pour Elfe");
-                System.out.println("Tapez '3' pour Nain");
-            }
-            default -> System.out.println("Erreur boucle race personnage :(");
-        }
 
-            while (erreur != 0) {
+            while (error != 0) {
                 buff = sc.nextLine();
-                erreur = 0;
+                error = 0;
                 switch (buff) {
-                    case "1" -> buff = "Humain";
-                    case "2" -> buff = "Elfe";
-                    case "3" -> buff = "Nain";
+                    case "1" -> buff = "Human";
+                    case "2" -> buff = "Elf";
+                    case "3" -> buff = "Dwarf";
                     default -> {
                         System.out.println("Tapez '1' pour Humain, '2' pour Elfe ou '3' pour Nain");
-                        erreur = 1;
+                        error = 1;
                     }
                 }
 
@@ -138,9 +131,9 @@ public class Introduction {
         return buff;
     }
 
-    protected String saisirMetier(int numeroPersonnage) {
+    protected String putJob(int numeroPersonnage) {
         Scanner sc = new Scanner(System.in);
-        int erreur = -1;
+        int error = -1;
         String buff = "";
 
         switch (numeroPersonnage) {
@@ -168,9 +161,9 @@ public class Introduction {
             default -> System.out.println("Erreur boucle metier personnage :(");
         }
 
-        while (erreur != 0) {
+        while (error != 0) {
             buff = sc.nextLine();
-            erreur = 0;
+            error = 0;
             switch (buff) {
                 case "1":
                     buff = "Guerrier";
@@ -182,136 +175,97 @@ public class Introduction {
                     buff = "Mage";
                 default:
                     System.out.println("Tapez '1' pour Guerrier, '2' pour Archer, '3' pour Pretre ou '4' pour Mage");
-                    erreur = 1;
+                    error = 1;
             }
         }
         return buff;
     }
 
-    protected int initForce(String race, String metier){
-        int force = 0;
-
-        switch (race) {
-            case "Humain" -> force += 10;
-            case "Elfe" -> force += 8;
-            case "Nain" -> force += 13;
-            default -> System.out.println("Erreur dans l'init de la force pour la race (elle n'est pas en toi) :(");
-        }
-
-        switch (metier) {
-            case "Guerrier" -> force += 2;
-            case "Archer" -> force -= 2;
-            case "Pretre" -> force -= 1;
-            case "Mage" -> force -= 3;
-            default -> System.out.println("Erreur dans l'init de la force pour le metier (elle n'est pas en toi) :(");
-        }
-
-        return force;
-    }
-
-    protected int initDexterite(String race, String metier){
-        int dexterite = 0;
-
-        switch (race) {
-            case "Humain" -> dexterite += 10;
-            case "Elfe" -> dexterite += 13;
-            case "Nain" -> dexterite += 7;
-            default -> System.out.println("Erreur dans l'init de la dexterite pour la race :(");
-        }
-
-        switch (metier) {
-            case "Guerrier" -> dexterite += 0;
-            case "Archer" -> dexterite += 4;
-            case "Pretre" -> dexterite -= 2;
-            case "Mage" -> dexterite -= 2;
-            default -> System.out.println("Erreur dans l'init de la dexterite pour le metier :(");
-        }
-
-        return dexterite;
-    }
-
-    protected int InitConstitution(String race, String metier){
+    protected Characteristics initCharacteristics(String race, String metier){
+        int strength = 0;
+        int dexterity = 0;
         int constitution = 0;
-
-        switch (race) {
-            case "Humain" -> constitution += 10;
-            case "Elfe" -> constitution += 8;
-            case "Nain" -> constitution += 12;
-            default -> System.out.println("Erreur dans l'init de la constitution pour la race :(");
-        }
-
-        switch (metier) {
-            case "Guerrier" -> constitution += 1;
-            case "Archer" -> constitution -= 1;
-            case "Pretre" -> constitution += 1;
-            case "Mage" -> constitution -= 2;
-            default -> System.out.println("Erreur dans l'init de la constitution pour le metier :(");
-        }
-
-        return constitution;
-    }
-
-    protected int InitIntelligence(String race, String metier){
-        int intelligence = 0;
-
-        switch (race) {
-            case "Humain" -> intelligence += 10;
-            case "Elfe" -> intelligence += 11;
-            case "Nain" -> intelligence += 8;
-            default -> System.out.println("Erreur dans l'init de l'intel pour la race :(");
-        }
-
-        switch (metier) {
-            case "Guerrier" -> intelligence -= 3;
-            case "Archer" -> intelligence -= 1;
-            case "Pretre" -> intelligence += 2;
-            case "Mage" -> intelligence += 6;
-            default -> System.out.println("Erreur dans l'init de l'intel pour le metier) :(");
-        }
-
-        return intelligence;
-    }
-
-    protected int InitHP(String race, String metier){
+        int wisdom = 0;
         int hp = 0;
-
-        switch (race) {
-            case "Humain" -> hp += 20;
-            case "Elfe" -> hp += 16;
-            case "Nain" -> hp += 25;
-            default -> System.out.println("Erreur dans l'init des hp pour la race :(");
-        }
-
-        switch (metier) {
-            case "Guerrier" -> hp += 4;
-            case "Archer" -> hp += 0;
-            case "Pretre" -> hp -= 1;
-            case "Mage" -> hp -= 3;
-            default -> System.out.println("Erreur dans l'init des hp pour le metier) :(");
-        }
-
-        return hp;
-    }
-
-    protected int InitMP(String race, String metier){
         int mp = 0;
+        int defense = 1;
 
         switch (race) {
-            case "Humain" -> mp += 4;
-            case "Elfe" -> mp += 6;
-            case "Nain" -> mp += 3;
-            default -> System.out.println("Erreur dans l'init des mp pour la race :(");
+            case "Humain" -> {
+                strength += 10;
+                dexterity += 10;
+                constitution += 10;
+                wisdom += 10;
+                hp += 20;
+                mp += 4;
+            }
+            case "Elfe" -> {
+                strength += 8;
+                dexterity += 13;
+                constitution += 8;
+                wisdom += 11;
+                hp += 16;
+                mp += 6;
+            }
+            case "Nain" -> {
+                strength += 13;
+                dexterity += 7;
+                constitution += 12;
+                wisdom += 8;
+                hp += 25;
+                mp += 3;
+            }
+            default -> System.out.println("Erreur dans l'init des caractéristiques");
         }
 
         switch (metier) {
-            case "Guerrier" -> mp -= 2;
-            case "Archer" -> mp += 0;
-            case "Pretre" -> mp += 1;
-            case "Mage" -> mp += 2;
-            default -> System.out.println("Erreur dans l'init des mp pour le metier) :(");
+            case "Guerrier" -> {
+                strength += 2;
+                dexterity += 0;
+                constitution += 1;
+                wisdom -= 3;
+                hp += 4;
+                mp -= 2;
+                defense += 1;
+            }
+            case "Archer" -> {
+                strength -= 2;
+                dexterity += 4;
+                constitution -= 1;
+                wisdom -= 1;
+                hp += 0;
+                mp += 0;
+                defense -= 1;
+            }
+            case "Pretre" -> {
+                strength -= 1;
+                dexterity -= 2;
+                constitution += 1;
+                hp -= 1;
+                mp += 1;
+                wisdom += 2;
+            }
+            case "Mage" -> {
+                strength -= 3;
+                dexterity -= 2;
+                constitution -= 2;
+                wisdom += 6;
+                hp -= 3;
+                mp += 2;
+                defense -= 1;
+            }
+            default -> System.out.println("Erreur dans l'init des caractéristiques");
         }
 
-        return mp;
+        return Characteristics.builder()
+                .strength(strength)
+                .dexterity(dexterity)
+                .constitution(constitution)
+                .wisdom(wisdom)
+                .hp(hp)
+                .mp(mp)
+                .defense(defense)
+                .build();
     }
 
 }

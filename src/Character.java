@@ -1,5 +1,7 @@
 import lombok.*;
 
+import java.util.List;
+
 import static java.lang.Math.round;
 
 @Getter
@@ -12,11 +14,10 @@ class Character {
     private Race race;
     private Job job;
     private int level;
-    private int hp;
-    private int mp;
     private Characteristics characteristics;
     private int teamNumber;
-    private Magic magic;
+    private List<Magic.Spell> spells;
+    private Status status;
 
     public int attack(Character attacker, Character target) {
         int touche = 0;
@@ -36,9 +37,9 @@ class Character {
             if (resultatDe >= 99) {
                 degats = (int) round(degats * 1.5);
             }
-            if (target.getHp() - degats < 0) {
-                target.setHp(0);
-            }else target.setHp(target.getHp() - degats);
+            if (target.characteristics.getHp() - degats < 0) {
+                target.characteristics.setHp(0);
+            }else target.characteristics.setHp(target.characteristics.getHp() - degats);
             System.out.printf("Attaque réussie ! %s a infligé " + Integer.toString(degats) + " !", attacker.getName());
             if (target.isDead()==true) System.out.printf("%s est mort. RIP.%n", target.getName());
         }
@@ -50,12 +51,10 @@ class Character {
         return 0;    //returns the number of HP healed
     }
 
-    public boolean isDead() { return hp == 0; }
+    public boolean isDead() { return characteristics.getHp() == 0; }
 
     public void levelUp(Character character){
         character.level += +1;
-        hp = hp + hp /2;
-        mp = mp + mp / 3;
         character.characteristics = levelUpCharacteristics();
     }
 
@@ -64,14 +63,16 @@ class Character {
                 .strength(this.characteristics.getStrength() + 2)
                 .dexterity(this.characteristics.getDexterity() + 1)
                 .constitution(this.characteristics.getConstitution() + 2)
+                .hp(this.characteristics.getHp() + 5)
+                .mp(this.characteristics.getMp() + 2)
                 //TODO add characteristics upgrades when leveling up
                 .build();
         return newCharacteristics;
     }
 
     private void giveMagic(Character character){
-        Magic magic = new Magic();
-        
+        //Magic magic = new Magic().giveMeMagic(character);
+
     }
 
 }
