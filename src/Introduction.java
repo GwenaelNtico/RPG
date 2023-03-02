@@ -34,9 +34,9 @@ public class Introduction {
         System.out.println("A vous de jouer, constituez votre équipe !");
     }
 
-    protected List<Personnage> creerEquipe(int tailleEquipe, int numeroEquipe) {
+    protected List<Character> creerEquipe(int tailleEquipe, int numeroEquipe) {
 
-        List<Personnage> equipe = new ArrayList<Personnage>();
+        List<Character> equipe = new ArrayList<Character>();
         while(equipe.size() < tailleEquipe){
             equipe.add(creerPersonnage(equipe.size(), numeroEquipe));
         }
@@ -44,17 +44,16 @@ public class Introduction {
         return equipe;
     }
 
-    protected Personnage creerPersonnage(int numeroPersonnage, int numeroEquipe) {
+    protected Character creerPersonnage(int numeroPersonnage, int numeroEquipe) {
         String nom = saisirNom(numeroPersonnage);
         String race = saisirRace(numeroPersonnage);
         String metier = saisirMetier(numeroPersonnage);
-        Magie magie = saisirMagie(metier);
 
         //Builder
-        return Personnage.builder()
-                .nom(nom)
+        return Character.builder()
+                .name(nom)
                 .race(race)
-                .metier(metier)
+                .job(metier)
                 .force(initForce(race, metier))
                 .dexterite(initDexterite(race, metier))
                 .constitution(InitConstitution(race, metier))
@@ -63,8 +62,7 @@ public class Introduction {
                 .mp(InitMP(race, metier))
                 .armure(1)
                 .mort(false)
-                .numeroEquipe(numeroEquipe)
-                .magie(magie)
+                .teamNumber(numeroEquipe)
                 .build();
     }
 
@@ -188,24 +186,6 @@ public class Introduction {
             }
         }
         return buff;
-    }
-
-    protected Magie saisirMagie(String metier){
-        Magie magie;
-        switch (metier){
-            case "Guerrier":
-                magie = new Magie(-1,-1,-1,-1,-1,-1,-1,-1,-1,0);
-            case "Archer":
-                magie = new Magie(-1,-1,-1,-1,-1,-1,-1,-1,0,-1);
-            case "Pretre":
-                magie = new Magie(-1,-1,-1,-1,0,0,0,0,-1,-1);
-            case "Mage":
-                magie = new Magie(0,0,0,0,-1,-1,-1,-1,-1,-1);
-            default:
-                magie = null;
-        }
-
-        return magie;
     }
 
     protected int initForce(String race, String metier){

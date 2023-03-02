@@ -1,9 +1,9 @@
+import java.util.List;
+
 public class Jeu {
 
-    boolean equipeMorte(){
-        boolean equipeMorte = false;
-
-
+    boolean equipeMorte(List<Character> equipe){
+        boolean equipeMorte = true;
 
         return equipeMorte;
     }
