@@ -2,7 +2,7 @@ import static java.lang.Math.round;
 
 public class Actions {
 
-    void Attaquer(Personnage attaquant, Personnage defenseur){
+    void attaquer(Character attaquant, Character defenseur){
         boolean attaqueReussie = false;
         int touche = 0;
         int degats = 0;
@@ -26,13 +26,13 @@ public class Actions {
                 // PERSONNAGE MORT
                 defenseur.setHp(0);
                 defenseur.setMort(true);
-                System.out.printf("%s est mort. RIP.%n", defenseur.getNom());
+                System.out.printf("%s est mort. RIP.%n", defenseur.getName());
             }else defenseur.setHp(defenseur.getHp() - degats);
 
         }
     }
 
-    void Soigner(Personnage soigneur, Personnage blesse){
+    void soigner(Character soigneur, Character blesse){
         int soin = 0;
         int resultatDe = 0;
         De de = new De();
@@ -41,6 +41,11 @@ public class Actions {
         soin = resultatDe + round(soigneur.getIntelligence() / 5);
 
 
+    }
+
+    void repos(Character perso){
+        Magic magic = perso.getMagic();
+        magic.changerTour(perso, magic);
     }
 
 }
